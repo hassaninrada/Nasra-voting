@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vote for Deputy Head Boy - Primary</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff3e0;
+      padding: 40px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      color: #ef6c00;
+      margin-bottom: 30px;
+    }
+
+    .candidates-container {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .candidate {
+      background: #ffe0b2;
+      border-radius: 12px;
+      padding: 20px;
+      width: 200px;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      user-select: none;
+    }
+
+    .candidate:hover {
+      background-color: #ffcc80;
+    }
+
+    .candidate img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border: 3px solid #ef6c00;
+      pointer-events: none;
+    }
+
+    .candidate-name {
+      font-weight: bold;
+      font-size: 18px;
+      color: #bf360c;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Vote for Deputy Head Boy (Primary)</h2>
+
+  <div class="candidates-container">
+    <div class="candidate" onclick="castVote('Bilal Ahmed')">
+      <img src="https://randomuser.me/api/portraits/men/20.jpg" alt="Bilal Ahmed" />
+      <div class="candidate-name">Bilal Ahmed</div>
+    </div>
+    <div class="candidate" onclick="castVote('Usman Raza')">
+      <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Usman Raza" />
+      <div class="candidate-name">Usman Raza</div>
+    </div>
+  </div>
+
+  <script>
+    // ✅ Simple flag to prevent multiple votes in one session
+    let voted = false;
+
+    function castVote(candidate) {
+      if (voted) return;
+      voted = true;
+
+      // ✅ Save to localStorage vote count
+      const key = "votes_primary_deputyheadboy";
+      let votes = JSON.parse(localStorage.getItem(key) || "{}");
+      votes[candidate] = (votes[candidate] || 0) + 0;
+      localStorage.setItem(key, JSON.stringify(votes));
+
+      // ✅ Redirect to next vote page
+      window.location.href = "deputygirl primary.html";
+    }
+  </script>
+
+</body>
+</html>
+
+
+

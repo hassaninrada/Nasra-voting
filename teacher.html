@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Teacher Login - Nasra School Voting</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif; /* Match primary/secondary font */
+      background-color: #f0f2f5; /* Match primary/secondary background */
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      color: #333; /* Match text color for consistency */
+    }
+    .container {
+      background: white; /* Match primary/secondary container */
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Match shadow */
+      width: 320px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+    p {
+      margin: 15px 0 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 18px;
+      border-radius: 8px; /* Match button radius */
+      border: 1px solid #ccc;
+      font-size: 1.1rem;
+      outline: none;
+      text-transform: uppercase;
+      box-sizing: border-box;
+    }
+    input[type="text"]:focus {
+      border-color: #007bff; /* Match primary/secondary theme */
+      box-shadow: 0 0 8px rgba(0,123,255,0.3);
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px 0;
+      font-size: 1.2rem;
+      background-color: #007bff; /* Match primary/secondary button */
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3; /* Match hover effect */
+    }
+    .error {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #dc3545; /* Red for errors, consistent with common UI */
+      min-height: 22px;
+    }
+    img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border: 2px solid #007bff; /* Match theme color */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://schoolvisor.org/wp-content/uploads/2021/04/Nasra-School-logo-150x150.jpg" alt="Nasra School Logo">
+    <h1>👩‍🏫 Teacher Voting Login</h1>
+    <p>Enter Teacher Code</p>
+    <input type="text" id="teacherCode" placeholder="e.g. TCH123" />
+    <button onclick="teacherLogin()">Login</button>
+    <p id="error" class="error"></p>
+  </div>
+
+  <script>
+    const validTeacherCodes = ["TCH101", "TCH102", "TCH103", "TCH104"]; // Add teacher codes here
+
+    function teacherLogin() {
+      const code = document.getElementById("teacherCode").value.trim().toUpperCase();
+      const errorElem = document.getElementById("error");
+
+      if (!code) {
+        errorElem.textContent = "❌ Please enter a teacher code!";
+        return;
+      }
+
+      if (validTeacherCodes.includes(code)) {
+        if (!localStorage.getItem("teacherVoted-" + code)) {
+          // Set teacher code as GR equivalent for session tracking
+          localStorage.setItem("primary_gr", code); // Align with primary voting
+          localStorage.setItem("currentTeacher", code);
+          window.location.href = "teacher button page.html"; // Teacher vote page
+        } else {
+          errorElem.textContent = "⚠️ This code has already been used!";
+        }
+      } else {
+        errorElem.textContent = "❌ Invalid Teacher Code!";
+      }
+    }
+  </script>
+</body>
+</html>

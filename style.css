@@ -1,0 +1,167 @@
+.election-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  min-height: 100vh;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.8); /* semi-transparent background */
+  border-radius: 12px;
+}
+
+.election-section h2 {
+  font-size: 28px;
+  color: #004080;
+  margin-bottom: 15px;
+}
+
+.election-section p {
+  font-size: 17px;
+  color: #333;
+  max-width: 700px;
+  line-height: 1.6;
+}
+
+.election-btn {
+  margin-top: 25px;
+  padding: 12px 30px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #004080, #0073e6);
+  border: none;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 6px 12px rgba(0, 64, 128, 0.2);
+  transition: all 0.3s ease;
+}
+
+.election-btn:hover {
+  background: linear-gradient(135deg, #0059b3, #3399ff);
+  box-shadow: 0 8px 16px rgba(0, 64, 128, 0.3);
+  transform: translateY(-3px);
+}
+
+/* Nav container */
+nav {
+  background: linear-gradient(rgba(0, 0, 255, 0.664));
+  padding: 15px 40px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Nav links */
+nav a {
+  position: relative;
+  color: #222;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 12px 20px;
+  border-radius: 8px;
+  transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Hover and focus effects */
+nav a:hover,
+nav a:focus {
+  color: white;
+  background-color: #333;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+  outline: none;
+}
+
+/* Animated underline */
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+  transition: width 0.35s ease;
+  z-index: 10;
+}
+
+nav a:hover::after,
+nav a:focus::after {
+  width: 60%;
+}
+
+/* Optional: subtle letter spacing animation on hover */
+nav a:hover {
+  letter-spacing: 1.5px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  nav {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background:url('background.png');
+  color: #003366;
+  text-align: center;
+  margin: auto;
+  padding: auto;
+}
+.container {
+  max-width: 500px;
+  margin: 12% auto;
+  padding: 20px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.logo {
+  width: 100px;
+  margin-bottom: 10px;
+}
+input, button {
+  padding: 10px;
+  margin: 10px 0;
+  width: 80%;
+  font-size: 16px;
+}
+button {
+  background-color: #004080;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.login-box {
+  border-left: 6px solid #0077cc;
+}
+.candidate {
+  margin: 10px;
+  padding: 15px;
+  border: 2px solid #003366;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: #e6f0ff;
+}
+.candidate:hover {
+  background-color: #cce0ff;
+}
+.error {
+  color: red;
+}

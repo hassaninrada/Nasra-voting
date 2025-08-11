@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nasra School Voting Portal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+    body {
+      margin: 0; 
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+    .container {
+      background: rgba(0,0,0,0.5);
+      padding: 40px 60px;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      text-align: center;
+      width: 320px;
+    }
+    h1 {
+      margin-bottom: 30px;
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: 1.2px;
+    }
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    button {
+      background: linear-gradient(135deg, #43cea2, #185a9d);
+      border: none;
+      padding: 15px 0;
+      border-radius: 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.4s ease;
+      box-shadow: 0 5px 15px rgba(24,90,157,0.6);
+      letter-spacing: 0.05em;
+    }
+    button:hover {
+      background: linear-gradient(135deg, #185a9d, #43cea2);
+      box-shadow: 0 8px 25px rgba(24,90,157,0.8);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Nasra School Voting</h1>
+    <div class="btn-group">
+      <button onclick="location.href='headboy primary.html'">Primary Teacher Voting</button>
+      <button onclick="location.href='headboy secondary.html'">Secondary Teacher Voting</button>
+    </div>
+  </div>
+
+</body>
+</html>

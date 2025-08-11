@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Confirm Your Vote - Secondary</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      text-align: center;
+      padding: 40px;
+    }
+    .container {
+      background-color: white;
+      display: inline-block;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    h2 {
+      margin-bottom: 25px;
+    }
+    .vote-item {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    button {
+      margin-top: 30px;
+      padding: 12px 25px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🗳️ Confirm Your Vote (Secondary Section)</h2>
+    <div class="vote-item"><strong>Head Boy:</strong> <span id="hb">-</span></div>
+    <div class="vote-item"><strong>Head Girl:</strong> <span id="hg">-</span></div>
+    <div class="vote-item"><strong>Deputy Head Boy:</strong> <span id="dhb">-</span></div>
+    <div class="vote-item"><strong>Deputy Head Girl:</strong> <span id="dhg">-</span></div>
+    <button onclick="submitVote()">✅ Submit Vote</button>
+  </div>
+  <script>
+    document.getElementById("hb").textContent = localStorage.getItem("vote_headboy") || "-";
+    document.getElementById("hg").textContent = localStorage.getItem("vote_headgirl") || "-";
+    document.getElementById("dhb").textContent = localStorage.getItem("vote_deputyboy") || "-";
+    document.getElementById("dhg").textContent = localStorage.getItem("vote_deputygirl") || "-";
+
+    function submitVote() {
+      incrementVote("headboy", localStorage.getItem("vote_headboy"));
+      incrementVote("headgirl", localStorage.getItem("vote_headgirl"));
+      incrementVote("deputyboy", localStorage.getItem("vote_deputyboy"));
+      incrementVote("deputygirl", localStorage.getItem("vote_deputygirl"));
+
+      localStorage.removeItem("vote_headboy");
+      localStorage.removeItem("vote_headgirl");
+      localStorage.removeItem("vote_deputyboy");
+      localStorage.removeItem("vote_deputygirl");
+
+      window.location.href = "success Secondary.html";
+    }
+
+    function incrementVote(role, candidate) {
+      if (!candidate) return;
+      let votes = JSON.parse(localStorage.getItem("votes_" + role) || "{}");
+      votes[candidate] = (votes[candidate] || 0) + 1;
+      localStorage.setItem("votes_" + role, JSON.stringify(votes));
+    }
+    
+  </script>
+</body>

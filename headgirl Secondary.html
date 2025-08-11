@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vote - Head Girl (Secondary)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f0f7;
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
+    h1 {
+      color: #a83279;
+      margin-bottom: 40px;
+    }
+    .candidate {
+      display: inline-block;
+      margin: 20px;
+      padding: 20px;
+      background-color: #fff;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      width: 200px;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      user-select: none;
+    }
+    .candidate:hover {
+      border-color: #e91e63;
+      transform: scale(1.05);
+    }
+    .candidate h3 {
+      margin: 10px 0 0;
+      color: #333;
+      font-weight: 600;
+    }
+    .candidate img {
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+    }
+    .message {
+      color: red;
+      margin-top: 30px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      min-height: 1.5em;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🗳️ Vote for Head Girl - Secondary Section</h1>
+
+  <div class="candidate" onclick="castVote('Fatima Ali')" tabindex="0" role="button" onkeypress="if(event.key==='Enter'){castVote('Fatima Ali')}">
+    <img src="https://png.pngtree.com/png-vector/20240205/ourmid/pngtree-professional-women-working-in-laptop-png-image_11720146.png" alt="Fatima Ali" />
+    <h3>Fatima Ali</h3>
+  </div>
+
+  <div class="candidate" onclick="castVote('Ayesha Khan')" tabindex="0" role="button" onkeypress="if(event.key==='Enter'){castVote('Ayesha Khan')}">
+    <img src="https://png.pngtree.com/png-vector/20240205/ourmid/pngtree-professional-women-working-in-laptop-png-image_11720146.png" alt="Ayesha Khan" />
+    <h3>Ayesha Khan</h3>
+  </div>
+
+  <script>
+    
+    function castVote(candidate) {
+      localStorage.setItem("vote_headgirl", candidate);
+      window.location.href = "deputyboy secondary.html";
+    }
+  </script>
+</body>
+</html>
+
+

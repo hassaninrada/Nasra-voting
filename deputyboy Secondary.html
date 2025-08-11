@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vote - Deputy Head Boy (Secondary)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f7f9;
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
+    h1 {
+      color: #31708f;
+      margin-bottom: 40px;
+    }
+    .candidate {
+      display: inline-block;
+      margin: 20px;
+      padding: 20px;
+      background-color: #fff;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      width: 200px;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      user-select: none;
+    }
+    .candidate:hover {
+      border-color: #2196f3;
+      transform: scale(1.05);
+    }
+    .candidate h3 {
+      margin: 10px 0 0;
+      color: #333;
+      font-weight: 600;
+    }
+    .candidate img {
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🗳️ Vote for Deputy Head Boy - Secondary Section</h1>
+
+  <div class="candidate" onclick="castVote('Ahmad Ali')" tabindex="0" role="button" onkeypress="if(event.key==='Enter'){castVote('Ahmad Ali')}">
+    <img src="https://img.freepik.com/premium-photo/corporate-portrait-young-business-man_590464-11123.jpg" alt="Ahmad Ali" />
+    <h3>Ahmad Ali</h3>
+  </div>
+
+  <div class="candidate" onclick="castVote('Bilal Hussain')" tabindex="0" role="button" onkeypress="if(event.key==='Enter'){castVote('Bilal Hussain')}">
+    <img src="https://img.freepik.com/premium-photo/corporate-portrait-young-business-man_590464-11123.jpg" alt="Bilal Hussain" />
+    <h3>Bilal Hussain</h3>
+  </div>
+
+  <script>
+    
+    function castVote(candidate) {
+      localStorage.setItem("vote_deputyboy", candidate);
+      window.location.href = "deputygirl secondary.html";
+    }
+  </script>
+</body>
+</html>
+

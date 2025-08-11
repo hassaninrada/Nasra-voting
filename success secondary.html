@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voting Complete - Secondary</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #d3cce3, #e9e4f0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .box {
+      text-align: center;
+      background-color: white;
+      padding: 50px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      color: #4a148c;
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 12px 24px;
+      background-color: #6a1b9a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #4a148c;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h1>🎉 Voting Successfully Completed!</h1>
+    <p>Thank you for participating in the Nasra School Elections.</p>
+    <button onclick="logout()">🔒 Log Out</button>
+  </div>
+
+  <script>
+    function logout() {
+      localStorage.removeItem("currentGR");
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
+</html>
