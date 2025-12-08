@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>E-Elections at Nasra School</title>
+  <link rel="stylesheet" href="style.css"/>
+ <nav>
+    <a href="#index.html">Home</a>
+    <a href="admin-login.html">Admin Primary</a>
+    <a href="admin Secondary.html">Admin Secondary</a>
+    <a href="Student primary .html"> Primary Students</a>
+   <a href="Student Secondary.html"> Secondary Students</a>
+    <a href="teacher.html">Teacher</a>
+  </nav>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1581090700227-1e7f7b6df54c?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      height: 100%; width: 100%;
+      background: rgba(255,255,255,0.85);
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    .text-section {
+      flex: 1;
+      min-width: 300px;
+      padding-right: 30px;
+    }
+
+    .text-section h2 {
+      color: #003366;
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .text-section p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .slideshow {
+      flex: 1;
+      max-width: 100px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      min-width: 250px;
+    }
+
+    .slide-img {
+      width: 100%;
+      height: auto;
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .text-section, .slideshow {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+  <img src="https://media.licdn.com/dms/image/v2/C560BAQFko6j57Cd7ew/company-logo_200_200/company-logo_200_200/0/1630573474832?e=2147483647&v=beta&t=x9OlVqbYPGzniX0ZWa9EgTMZ87DVakvda54AYWDVWJQ">
+    <div class="text-section">
+      <h2>🗳️ Nasra School's Digital E-Election Platform!</h2>
+      <p>
+       Welcome to Nasra School's Digital E-Election Platform!
+At Nasra School, we're thrilled to launch our fully digital E-Election system for both Primary and Secondary sections — a modern step toward empowering our young leaders. This innovative platform brings excitement, fairness, and accessibility to the voting process, allowing students to vote confidently through school-supervised online devices using secure GR numbers. By going digital, we’re not only making the election process transparent and efficient but also helping students embrace responsibility, leadership, and digital citizenship.
+🎉 Let’s celebrate this journey into a new era of technology-powered democracy together!
+      </p>
+      <a href="Student primary .html" class="election-btn">Primary Students</a>
+      <a href="Student Secondary.html" class="election-btn"> Secondary Students</a>
+      <a href="teacher.html" class="election-btn"> Teacher</a>
+    </div>
+   
+
+    <!-- Slideshow Section -->
+    <div class="slideshow">
+      <img class="slide-img active" src="voting1 .jpg" alt="Voting Image 1">
+      <img class="slide-img" src="voting 2.jpg" alt="Voting Image 2">
+      <img class="slide-img" src="voting 3.jpg" alt="Voting Image 3">
+      <img class="slide-img" src="voting 4.jpg" alt="voting Image 4"
+    </div>
+  </div>
+
+  <script>
+    // Image slideshow
+    let currentSlide = 0;
+    const slides = document.querySelectorAll(".slide-img");
+
+    setInterval(() => {
+      slides[currentSlide].classList.remove("active");
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add("active");
+    }, 3000);
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    footer {
+      background-color: #03274d;
+      color: white;
+      padding: auto;
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width:auto;
+      margin: auto;
+    }
+
+    .footer-icons {
+      margin-top: auto;
+    }
+
+    .footer-icons a {
+      color: white;
+      margin: 0 15px;
+      font-size: 22px;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-icons a:hover {
+      color: #ffcc00;
+    }
+
+    .about-us {
+      margin-bottom: auto;
+    }
+
+    .powered {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #cccccc;
+    }
+  </style>
+  <footer>
+    <div class="footer-content">
+      <div class="about-us">
+        <h2>About Us - Nasra School</h2>
+        <p>Nasra School is committed to nurturing students with quality education, character building, and lifelong learning. We aim to create future leaders with strong academic values.</p>
+      </div>
+      <div class="footer-icons">
+        <a href="https://www.facebook.com/ETNS.EducationTrustNasraSchool/" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="info@nasraschool.edu.pk"><i class="fas fa-envelope"></i></a>
+        <a href="tel:(92-21) 32361313-18"><i class="fas fa-phone"></i></a>
+        <a href="https://www.youtube.com/channel/UCxLEtU78o1nbuMguIKi9pPg/featured" target="_blank">
+  <i class="fab fa-youtube"></i>
+</a>
+<a href="https://www.instagram.com/nasraschools/" target="_blank">
+  <i class="fab fa-instagram"></i>
+</a>
+      </div>
+      <div class="powered">
+        Powered by <strong>Hassain Rada</strong>
+      </div>
+    </div>
+  </footer>
+<script>
+  // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDnFLrOySrAP1tqIsgoo1ee05_lYD_WQ2I",
+  authDomain: "nasra-school-voting-system.firebaseapp.com",
+  databaseURL: "https://nasra-school-voting-system-default-rtdb.firebaseio.com",
+  projectId: "nasra-school-voting-system",
+  storageBucket: "nasra-school-voting-system.firebasestorage.app",
+  messagingSenderId: "436539276707",
+  appId: "1:436539276707:web:b26556d899ed83cb2cae16",
+  measurementId: "G-DZPTRNB655"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vote - Deputy Head Girl (Secondary)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff0f6;
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
+    h1 {
+      color: #c2185b;
+      margin-bottom: 40px;
+    }
+    .candidate {
+      display: inline-block;
+      margin: 20px;
+      padding: 20px;
+      background-color: #fff;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      width: 200px;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      user-select: none;
+    }
+    .candidate:hover {
+      border-color: #e91e63;
+      transform: scale(1.05);
+    }
+    .candidate h3 {
+      margin: 10px 0 0;
+      color: #333;
+      font-weight: 600;
+    }
+    .candidate img {
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🗳️ Vote for Deputy Head Girl - Secondary Section</h1>
+
+  <div class="candidate" onclick="castVote('Sana Malik')" tabindex="0" role="button" onkeypress="if(event.key==='Enter'){castVote('Sana Malik')}">
+    <img src="https://png.pngtree.com/png-vector/20240205/ourmid/pngtree-professional-women-working-in-laptop-png-image_11720146.png" alt="Sana Malik" />
+    <h3>Sana Malik</h3>
+  </div>
+
+  <div class="candidate" onclick="castVote('Maryam Tariq')" tabindex="0" role="button" onkeypress="if(event.key==='Enter'){castVote('Maryam Tariq')}">
+    <img src="https://png.pngtree.com/png-vector/20240205/ourmid/pngtree-professional-women-working-in-laptop-png-image_11720146.png" alt="Maryam Tariq" />
+    <h3>Maryam Tariq</h3>
+  </div>
+
+  <script>
+    
+    function castVote(candidate) {
+      localStorage.setItem("vote_deputygirl", candidate);
+      window.location.href = "confirmsecondary.html";
+    }
+  </script>
+</body>
+</html>
+
+
+

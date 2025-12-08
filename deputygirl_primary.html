@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vote for Deputy Head Girl - Primary</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff3e0;
+      padding: 40px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h2 {
+      color: #ef6c00;
+      margin-bottom: 30px;
+    }
+    .candidates-container {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 800px;
+      width: 100%;
+    }
+    .candidate {
+      background: #ffe0b2;
+      border-radius: 12px;
+      padding: 20px;
+      width: 200px;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      user-select: none;
+    }
+    .candidate:hover {
+      background-color: #ffcc80;
+    }
+    .candidate img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border: 3px solid #ef6c00;
+    }
+    .candidate-name {
+      font-weight: bold;
+      font-size: 18px;
+      color: #bf360c;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Vote for Deputy Head Girl (Primary)</h2>
+
+  <div class="candidates-container">
+    <div class="candidate" onclick="castVote('Fatima Noor')">
+      <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Fatima Noor" />
+      <div class="candidate-name">Fatima Noor</div>
+    </div>
+    <div class="candidate" onclick="castVote('Zara Ali')">
+      <img src="https://randomuser.me/api/portraits/women/54.jpg" alt="Zara Ali" />
+      <div class="candidate-name">Zara Ali</div>
+    </div>
+  </div>
+
+  <script>
+    function castVote(candidate) {
+      const gr = localStorage.getItem("primary_gr");
+      if (!gr) {
+        console.error("GR number missing.");
+        return;
+      }
+
+      // Get votes or start new
+      let votes = JSON.parse(localStorage.getItem("votes_primarydeputygirl") || "{}");
+      votes[candidate] = (votes[candidate] || 0) + 1;
+      localStorage.setItem("votes_primarydeputygirl", JSON.stringify(votes));
+
+      // ✅ Save selected candidate for confirm page
+      localStorage.setItem("selected_primary_deputyheadgirl_" + gr, candidate);
+
+      // Optional: mark student as voted
+      // localStorage.setItem("primary_voted_" + gr, "true");
+
+      // Go to confirm page
+      window.location.href = "confirm primary.html";
+    }
+  </script>
+
+</body>
+</html>

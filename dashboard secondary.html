@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard (Secondary) - Nasra School</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f4f8;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 70px;
+      background-color: #e3f2e1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      border-right: 1px solid #ccc;
+    }
+
+    .sidebar img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 40px;
+    }
+
+    .sidebar button {
+      background: none;
+      border: none;
+      margin: 10px 0;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      padding: 40px;
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      float: right;
+      margin-bottom: 20px;
+    }
+
+    canvas {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .reset-btn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #e53935;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .reset-btn:hover {
+      background-color: #c62828;
+    }
+    .export-btn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #e53935;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .export-btn:hover {
+      background-color: #c62828;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <img src="https://nasraschool.edu.pk/wp-content/uploads/2024/03/logo.webp" alt="Nasra Logo" />
+    <button onclick="location.reload()" title="Reload">🔄</button>
+    <button onclick="resetAllVotes()" title="Reset All Votes">🗑️</button>
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+    <h1>📊 Admin Dashboard (Secondary)</h1>
+
+    <select id="categorySelect" onchange="updateChart()">
+      <option value="headboy">Head Boy</option>
+      <option value="headgirl">Head Girl</option>
+      <option value="deputyboy">Deputy Head Boy</option>
+      <option value="deputygirl" selected>Deputy Head Girl</option>
+    </select>
+
+    <canvas id="resultChart" height="120"></canvas>
+
+    <button class="reset-btn" onclick="resetAllVotes()">Reset All Votes</button>
+       <button class="export-btn" onclick="exportToCSV()">Export CSV</button>
+  </div>
+
+  <script>
+    const roleNames = {
+      headboy: "Head Boy",
+      headgirl: "Head Girl",
+      deputyboy: "Deputy Head Boy",
+      deputygirl: "Deputy Head Girl"
+    };
+
+    const ctx = document.getElementById("resultChart").getContext("2d");
+    let chart;
+
+    function createChart(role) {
+      const votes = JSON.parse(localStorage.getItem("votes_" + role) || "{}");
+      const names = Object.keys(votes);
+      const counts = Object.values(votes);
+
+      if (chart) chart.destroy();
+
+      chart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: names,
+          datasets: [{
+            label: "Votes",
+            data: counts,
+            backgroundColor: "rgba(54, 162, 235, 0.7)",
+            borderRadius: 5,
+            barThickness: 60
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true, position: "bottom" },
+            title: {
+              display: true,
+              text: roleNames[role],
+              font: { size: 20 }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1 }
+            }
+          }
+        }
+      });
+    }
+
+    function updateChart() {
+      const role = document.getElementById("categorySelect").value;
+      createChart(role);
+    }
+
+   function resetAllVotes() {
+  const confirmReset = confirm("⚠️ Are you sure you want to delete all votes?");
+  if (!confirmReset) return;
+
+  // Clear vote counts
+  const roles = ["headboy", "headgirl", "deputyboy", "deputygirl"];
+  roles.forEach(role => localStorage.removeItem("votes_" + role));
+
+  // Clear GR number list
+  localStorage.removeItem("votedGRs");
+
+  // Optional: clear currentGR (in case someone is logged in)
+  localStorage.removeItem("currentGR");
+
+  alert("✅ All votes and Cid numbers have been reset.");
+
+  // If you have a chart, you can update it here
+  if (typeof updateChart === "function") {
+    updateChart();
+  }
+}
+ function exportToCSV() {
+      const role = document.getElementById("categorySelect").value;
+      const votes = JSON.parse(localStorage.getItem("votes_" + role) || "{}");
+
+      let csvContent = "data:text/csv;charset=utf-8,Candidate,Votes\n";
+      for (let name in votes) {
+        csvContent += `${name},${votes[name]}\n`;
+      }
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `${role}_results.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+
+    // Load initial chart
+    createChart("deputygirl");
+  </script>
+
+</body>
+</html>

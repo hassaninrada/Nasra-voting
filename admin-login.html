@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login - Primary Section</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 60px;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h2 {
+      color: #004080;
+      margin-bottom: 20px;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #004080;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #003366;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Admin Login (Primary Section)</h2>
+    <form id="adminForm">
+      <input type="email" id="email" placeholder="Enter your Gmail" required />
+      <input type="password" id="password" placeholder="Enter password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p id="adminError" class="error"></p>
+  </div>
+
+  <script>
+    // ✅ Login credentials (local use only)
+    const adminCredentials = {
+      "hassaninrada@gmail.com": "123456",
+      "admin2@gmail.com": "pass2"
+    };
+
+    // ✅ Attach submit handler AFTER DOM loads
+    document.getElementById("adminForm").addEventListener("submit", function (e) {
+      e.preventDefault(); // ⛔ prevent reload
+
+      const email = document.getElementById("email").value.trim();
+      const pass = document.getElementById("password").value.trim();
+
+      if (adminCredentials[email] && adminCredentials[email] === pass) {
+        localStorage.setItem("loggedAdminPrimary", email);
+        window.location.href = "dashboard-primary.html"; // ✅ make sure this file exists!
+      } else {
+        document.getElementById("adminError").textContent = "❌ Invalid email or password!";
+      }
+    });
+
+    // ✅ Auto-redirect if already logged in
+   
+  </script>
+
+</body>
+</html>
+
+
+
