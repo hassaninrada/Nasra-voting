@@ -295,6 +295,11 @@
 "11735", "11774", "11775", "11866"
 
     ];
+async function loadCIDData() {
+  const response = await fetch("https://hassaninrada.github.io/students-report/");
+  const data = await response.json();
+  return data.cid_numbers;
+}
 
     window.addEventListener("storage", function (event) {
       if (event.key === "secondary_reset_signal") {
@@ -341,3 +346,4 @@
 
 </body>
 </html>
+
