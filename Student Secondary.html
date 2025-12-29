@@ -295,6 +295,31 @@
 "11735", "11774", "11775", "11866"
 
     ];
+async function loadCIDData() {
+  try {
+    const response = await fetch("https://cdn.jsdelivr.net/gh/hassaninrada/students-report@main/cidlist.json");
+    const data = await response.json();
+    
+    // use allowedCidnos instead of cid_numbers
+    return data.allowedCidnos || [];
+  } catch (err) {
+    console.error("Error loading CID data:", err);
+    return [];
+  }
+}
+
+async function validateCID() {
+  const inputCID = document.getElementById("cidInput").value.trim();
+  const cidList = await loadCIDData();
+
+  if (cidList.includes(inputCID)) {
+    alert("✔ CID Verified — You can vote!");
+    // TODO: redirect or unlock voting page here
+    // window.location.href = "vote.html";
+  } else {
+    alert("❌ CID not found — Access denied.");
+  }
+}
 
     window.addEventListener("storage", function (event) {
       if (event.key === "secondary_reset_signal") {
@@ -341,5 +366,6 @@
 
 </body>
 </html>
+
 
 
