@@ -295,7 +295,34 @@
 "11735", "11774", "11775", "11866"
 
     ];
+async function loadCIDData() {
+  const url = "https://raw.githubusercontent.com/hassaninrada/students-report/main/cidlist.json";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error("Failed to fetch JSON:", response.status);
+      return [];
+    }
+    const data = await response.json();
+    return data.allowedCidnos || [];
+  } catch (err) {
+    console.error("Error loading CID data:", err);
+    return [];
+  }
+}
 
+async function validateCID() {
+  const inputCID = document.getElementById("cidInput").value.trim();
+  const cidList = await loadCIDData();
+
+  console.log("Loaded CIDs:", cidList);
+
+  if (cidList.includes(inputCID)) {
+    alert("✔ CID Verified — You can vote!");
+  } else {
+    alert("❌ CID not found — Access denied.");
+  }
+}
     window.addEventListener("storage", function (event) {
       if (event.key === "secondary_reset_signal") {
         Object.keys(localStorage).forEach((key) => {
@@ -341,6 +368,7 @@
 
 </body>
 </html>
+
 
 
 
