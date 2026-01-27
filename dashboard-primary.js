@@ -16,7 +16,6 @@ if (resultChartEl) {
 let chart;
 
 // SIDEBAR TOGGLE
-// SIDEBAR TOGGLE logic
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebar-overlay');
@@ -80,10 +79,6 @@ document.getElementById('nav-candidates')?.addEventListener('click', (e) => {
     showSection('candidates');
 });
 
-// Bind selects
-document.getElementById('categorySelect')?.addEventListener('change', updateChart);
-
-
 
 // CANDIDATE MANAGEMENT
 window.fetchCandidates = async () => {
@@ -94,9 +89,9 @@ window.fetchCandidates = async () => {
     const { data, error } = await supabase.from('candidates').select('*').eq('wing', 'Primary');
     if (error) {
         grid.innerHTML = `<div class="col-span-full border-2 border-dashed border-red-100 p-10 rounded-3xl text-center">
-            <p class="text-red-500 font-black text-xs uppercase mb-4">Database Grid Missing</p>
-            <p class="text-blue-400 text-xs">The 'candidates' table must be created in Supabase to use this feature.</p>
-        </div>`;
+                    <p class="text-red-500 font-black text-xs uppercase mb-4">Database Grid Missing</p>
+                    <p class="text-blue-400 text-xs">The 'candidates' table must be created in Supabase to use this feature.</p>
+                </div>`;
         return;
     }
 
@@ -110,20 +105,20 @@ window.fetchCandidates = async () => {
         const div = document.createElement('div');
         div.className = "p-6 bg-white rounded-[2rem] border-2 border-blue-50 flex items-center gap-6 group relative";
         div.innerHTML = `
-            <div class="w-16 h-16 rounded-2xl overflow-hidden bg-white border-2 border-blue-100 shrink-0 shadow-sm">
-                <img src="${cand.image_url || 'https://via.placeholder.com/150'}" class="w-full h-full object-cover">
-            </div>
-            <div class="flex-grow">
-                <p class="text-sm font-black text-blue-900">${cand.name}</p>
-                <p class="text-[9px] font-bold text-blue-300 uppercase tracking-widest mt-1">${roleNames[cand.role] || cand.role}</p>
-            </div>
-            <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center p-2">
-                <img src="${cand.symbol_url || 'https://via.placeholder.com/50'}" class="max-w-full max-h-full opacity-60">
-            </div>
-            <button onclick="deleteCandidate('${cand.id}')" title="Delete Candidate" class="w-10 h-10 bg-red-50 hover:bg-red-500 border-2 border-red-200 text-red-600 hover:text-white rounded-xl flex items-center justify-center transition-all shadow-sm hover:scale-110 touch-manipulation">
-                <i class="fa-solid fa-trash text-sm"></i>
-            </button>
-        `;
+                    <div class="w-16 h-16 rounded-2xl overflow-hidden bg-white border-2 border-blue-100 shrink-0 shadow-sm">
+                        <img src="${cand.image_url || 'https://via.placeholder.com/150'}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow">
+                        <p class="text-sm font-black text-blue-900">${cand.name}</p>
+                        <p class="text-[9px] font-bold text-blue-300 uppercase tracking-widest mt-1">${roleNames[cand.role] || cand.role}</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center p-2">
+                        <img src="${cand.symbol_url || 'https://via.placeholder.com/50'}" class="max-w-full max-h-full opacity-60">
+                    </div>
+                    <button onclick="deleteCandidate('${cand.id}')" title="Delete Candidate" class="w-10 h-10 bg-red-50 hover:bg-red-500 border-2 border-red-200 text-red-600 hover:text-white rounded-xl flex items-center justify-center transition-all shadow-sm hover:scale-110">
+                        <i class="fa-solid fa-trash text-sm"></i>
+                    </button>
+                `;
         grid.appendChild(div);
     });
 };
@@ -215,74 +210,44 @@ if (candSymbol) {
     });
 }
 
-// Global auth handler to prevent reload issues
-window.handleAuthClick = async (e) => {
-    e?.preventDefault(); // Just in case
+const candidateForm = document.getElementById('candidateForm');
+if (candidateForm) {
+    candidateForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button[type="submit"]');
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = "Processing...";
+        }
 
-    const form = document.getElementById('candidateForm');
-    if (form && !form.checkValidity()) {
-        form.reportValidity();
-        return;
-    }
+        const payload = {
+            name: document.getElementById('candName').value.trim(),
+            role: document.getElementById('candRole').value,
+            image_url: document.getElementById('candImage').value.trim(),
+            symbol_url: document.getElementById('candSymbol').value.trim(),
+            wing: 'Primary' // Changed to Primary
+        };
 
-    const btn = document.getElementById('authBtn');
-    if (btn) {
-        btn.disabled = true;
-        btn.textContent = "Processing...";
-    }
-
-    const candName = document.getElementById('candName');
-    const candRole = document.getElementById('candRole');
-    const candImage = document.getElementById('candImage');
-    const candSymbol = document.getElementById('candSymbol');
-
-    const payload = {
-        name: candName ? candName.value.trim() : "",
-        role: candRole ? candRole.value : "headboy",
-        image_url: candImage ? candImage.value.trim() : "",
-        symbol_url: candSymbol ? candSymbol.value.trim() : "",
-        wing: 'Primary'
-    };
-
-    const { error } = await supabase.from('candidates').insert([payload]);
-    if (error) {
-        showToast(error.message, 'bg-red-500');
+        const { error } = await supabase.from('candidates').insert([payload]);
+        if (error) {
+            showToast(error.message, 'bg-red-500');
+        } else {
+            e.target.reset();
+            const photoPreview = document.getElementById('photoPreview');
+            const symbolPreview = document.getElementById('symbolPreview');
+            if (photoPreview) photoPreview.classList.add('hidden');
+            if (symbolPreview) symbolPreview.classList.add('hidden');
+            fetchCandidates();
+        }
         if (btn) {
             btn.disabled = false;
-            btn.innerHTML = `
-            <span class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-shield-halved"></i>
-            </span>
-            <span>Authorize Registration</span>`;
+            btn.textContent = "Authorize Registration";
         }
-    } else {
-        if (form) form.reset();
-        const photoPreview = document.getElementById('photoPreview');
-        const symbolPreview = document.getElementById('symbolPreview');
-        if (photoPreview) photoPreview.classList.add('hidden');
-        if (symbolPreview) symbolPreview.classList.add('hidden');
-
-        fetchCandidates();
-        showToast('Candidate successfully registered!', 'bg-green-600');
-
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = `
-            <span class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <i class="fa-solid fa-shield-halved"></i>
-            </span>
-            <span>Authorize Registration</span>`;
-        }
-    }
-};
-
-// Safe form binding (Legacy fallback)
-window.addEventListener('load', () => {
-    // We use onclick="handleAuthClick()" now, so no listener needed.
-    console.log("Dashboard loaded - Auth button ready");
-});
+    });
+}
 
 window.deleteCandidate = async (id) => {
+    // Find candidate name for better confirmation message
     const { data: candidate } = await supabase.from('candidates').select('name').eq('id', id).single();
     const candidateName = candidate?.name || 'this candidate';
 
@@ -308,10 +273,11 @@ window.updateChart = function () {
 }
 
 async function loadData(role) {
-    const { data, error } = await supabase.from('vote_counts').select('*').eq('role', role).eq('wing', 'Primary');
+    const { data, error } = await supabase.from('vote_counts').select('*').eq('role', role);
     if (error) return console.error(error);
 
-    const { data: allVotes } = await supabase.from('vote_counts').select('count').eq('wing', 'Primary');
+    // Fetch total votes
+    const { data: allVotes } = await supabase.from('vote_counts').select('count', { count: 'exact' }).in('role', Object.keys(roleNames));
     const total = allVotes ? allVotes.reduce((acc, curr) => acc + curr.count, 0) : 0;
     const totalVotesStat = document.getElementById("totalVotesStat");
     if (totalVotesStat) totalVotesStat.textContent = total;
@@ -335,10 +301,10 @@ function renderChart(role, votes) {
             datasets: [{
                 label: 'Votes',
                 data: counts,
-                backgroundColor: counts.map(c => (c === maxVote && c > 0) ? '#3498DB' : '#BBDEFB'),
+                backgroundColor: counts.map(c => (c === maxVote && c > 0) ? '#1565C0' : '#BBDEFB'),
                 borderRadius: 20,
                 borderSkipped: false,
-                barThickness: counts.length > 5 ? 20 : 40
+                barThickness: 40
             }]
         },
         options: {
@@ -347,7 +313,7 @@ function renderChart(role, votes) {
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    backgroundColor: '#1E293B',
+                    backgroundColor: '#0D47A1',
                     padding: 12,
                     titleFont: { size: 14, weight: 'bold' },
                     bodyFont: { size: 12 },
@@ -358,11 +324,11 @@ function renderChart(role, votes) {
                 y: {
                     beginAtZero: true,
                     grid: { display: false },
-                    ticks: { font: { weight: 'bold' }, stepSize: 1, color: '#3498DB' }
+                    ticks: { font: { weight: 'bold' }, stepSize: 1, color: '#0D47A1' }
                 },
                 x: {
                     grid: { display: false },
-                    ticks: { font: { weight: 'bold' }, color: '#3498DB' }
+                    ticks: { font: { weight: 'bold' }, color: '#0D47A1' }
                 }
             }
         }
@@ -370,7 +336,7 @@ function renderChart(role, votes) {
 }
 
 // REALTIME
-supabase.channel('dashboard-primary')
+supabase.channel('dashboard-primary') // Changed to primary
     .on('postgres_changes', { event: '*', schema: 'public', table: 'vote_counts' }, (payload) => {
         const insightsSection = document.getElementById('section-insights');
         if (insightsSection && insightsSection.classList.contains('hidden')) return;
@@ -385,19 +351,22 @@ function logChange(payload) {
     const entry = document.createElement("div");
     entry.className = "flex gap-3 items-center fadeIn p-4 bg-white rounded-2xl border-2 border-blue-50";
     entry.innerHTML = `
-        <div class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></div>
-        <div>
-            <p class="text-[10px] font-black text-blue-900 uppercase tracking-tight">${payload.new.candidate_name}</p>
-            <p class="text-[8px] font-bold text-blue-400 uppercase tracking-widest mt-0.5">+1 Vote Secured</p>
-        </div>
-        <span class="ml-auto text-[8px] font-bold text-blue-200">${new Date().toLocaleTimeString()}</span>
-    `;
-    if (logContainer.firstElementChild?.classList.contains('italic')) logContainer.innerHTML = '';
+                <div class="w-1.5 h-1.5 bg-blue-900 rounded-full animate-pulse"></div>
+                <div>
+                    <p class="text-[10px] font-black text-blue-900 uppercase tracking-tight">${payload.new.candidate_name}</p>
+                    <p class="text-[8px] font-bold text-blue-400 uppercase tracking-widest mt-0.5">+1 Vote Secured</p>
+                </div>
+                <span class="ml-auto text-[8px] font-bold text-blue-200">${new Date().toLocaleTimeString()}</span>
+            `;
+    if (logContainer.firstElementChild && logContainer.firstElementChild.classList.contains('italic')) logContainer.innerHTML = '';
     logContainer.prepend(entry);
 }
 
+// Bind selects
+document.getElementById('categorySelect')?.addEventListener('change', updateChart);
+
 document.getElementById("resetAllBtn")?.addEventListener("click", async () => {
-    if (confirm("⚠️ GLOBAL RESET INITIATED. This will wipe ALL primary results. System logs will be archived. Authorize?")) {
+    if (confirm("⚠️ CAUTION: Are you sure you want to reset ONLY PRIMARY votes? Secondary wing votes will stay safe.")) {
         try {
             const primaryRoles = ['headboy', 'headgirl', 'deputyboy', 'deputygirl'];
             await supabase.from('vote_counts').delete().in('role', primaryRoles);
@@ -431,17 +400,13 @@ function showToast(msg, bg = 'bg-blue-600') {
     const toast = document.getElementById("toast");
     if (toast) {
         toast.textContent = msg;
-        toast.className = `fixed bottom-8 left-1/2 -translate-x-1/2 px-6 py-4 rounded-2xl shadow-2xl text-white font-bold text-sm z-[100] transition-all ${bg} block fadeIn`;
+        toast.className = `fixed bottom-8 left-1/2 -translate-x-1/2 px-6 py-4 rounded-2xl shadow-2xl text-white font-bold text-sm z-50 transition-all ${bg} block fadeIn`;
         setTimeout(() => {
             if (toast) toast.classList.add('hidden');
         }, 4000);
     }
 }
 
-// Update deleteCandidate to be internal
-async function deleteCandidate(id) {
-    const { data: candidate } = await supabase.from('candidates').select('name').eq('id', id).single();
-    const candidateName = candidate?.name || 'this candidate';
+window.deleteCandidate = deleteCandidate;
 
-
-
+updateChart();
