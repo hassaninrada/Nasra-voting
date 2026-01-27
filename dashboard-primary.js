@@ -215,45 +215,59 @@ if (candSymbol) {
     });
 }
 
-const candidateForm = document.getElementById('candidateForm');
-if (candidateForm) {
-    candidateForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = e.target.querySelector('button[type="submit"]');
-        if (btn) {
-            btn.disabled = true;
-            btn.textContent = "Processing...";
-        }
+// Safe form binding
+window.addEventListener('load', () => {
+    const candidateForm = document.getElementById('candidateForm');
+    if (candidateForm) {
+        // Remove any existing listeners by cloning (optional but safe)
+        // const newForm = candidateForm.cloneNode(true);
+        // candidateForm.parentNode.replaceChild(newForm, candidateForm);
+        // Actually, simple addEventListener is fine if we are sure it runs once.
 
-        const candName = document.getElementById('candName');
-        const candRole = document.getElementById('candRole');
-        const candImage = document.getElementById('candImage');
-        const candSymbol = document.getElementById('candSymbol');
+        candidateForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log("Form submission intercepted"); // Debug log
 
-        const payload = {
-            name: candName ? candName.value.trim() : "",
-            role: candRole ? candRole.value : "headboy",
-            image_url: candImage ? candImage.value.trim() : "",
-            symbol_url: candSymbol ? candSymbol.value.trim() : "",
-            wing: 'Primary'
-        };
+            const btn = e.target.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = "Processing...";
+            }
 
-        const { error } = await supabase.from('candidates').insert([payload]);
-        if (error) showToast(error.message, 'bg-red-500');
-        else {
-            e.target.reset();
-            const photoPreview = document.getElementById('photoPreview');
-            const symbolPreview = document.getElementById('symbolPreview');
-            if (photoPreview) photoPreview.classList.add('hidden');
-            if (symbolPreview) symbolPreview.classList.add('hidden');
-            fetchCandidates();
-        }
-        if (btn) {
-            btn.disabled = false;
-            btn.textContent = "Authorize Registration";
-        }
-    });
-}
+            const candName = document.getElementById('candName');
+            const candRole = document.getElementById('candRole');
+            const candImage = document.getElementById('candImage');
+            const candSymbol = document.getElementById('candSymbol');
+
+            const payload = {
+                name: candName ? candName.value.trim() : "",
+                role: candRole ? candRole.value : "headboy",
+                image_url: candImage ? candImage.value.trim() : "",
+                symbol_url: candSymbol ? candSymbol.value.trim() : "",
+                wing: 'Primary'
+            };
+
+            const { error } = await supabase.from('candidates').insert([payload]);
+            if (error) showToast(error.message, 'bg-red-500');
+            else {
+                e.target.reset();
+                const photoPreview = document.getElementById('photoPreview');
+                const symbolPreview = document.getElementById('symbolPreview');
+                if (photoPreview) photoPreview.classList.add('hidden');
+                if (symbolPreview) symbolPreview.classList.add('hidden');
+                fetchCandidates();
+                showToast('Candidate successfully registered!', 'bg-green-600');
+            }
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = "Authorize Registration";
+            }
+        });
+        console.log("Candidate form listener attached");
+    } else {
+        console.error("Critical: Candidate form not found!");
+    }
+});
 
 window.deleteCandidate = async (id) => {
     const { data: candidate } = await supabase.from('candidates').select('name').eq('id', id).single();
@@ -429,4 +443,5 @@ async function deleteCandidate(id) {
 window.deleteCandidate = deleteCandidate; // Keep for now as it's in string-injected HTML
 
 updateChart();
+
 
