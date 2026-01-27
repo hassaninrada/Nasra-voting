@@ -215,58 +215,71 @@ if (candSymbol) {
     });
 }
 
-// Safe form binding
-window.addEventListener('load', () => {
-    const candidateForm = document.getElementById('candidateForm');
-    if (candidateForm) {
-        // Remove any existing listeners by cloning (optional but safe)
-        // const newForm = candidateForm.cloneNode(true);
-        // candidateForm.parentNode.replaceChild(newForm, candidateForm);
-        // Actually, simple addEventListener is fine if we are sure it runs once.
+// Global auth handler to prevent reload issues
+window.handleAuthClick = async (e) => {
+    e?.preventDefault(); // Just in case
 
-        candidateForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            console.log("Form submission intercepted"); // Debug log
-
-            const btn = e.target.querySelector('button[type="submit"]');
-            if (btn) {
-                btn.disabled = true;
-                btn.textContent = "Processing...";
-            }
-
-            const candName = document.getElementById('candName');
-            const candRole = document.getElementById('candRole');
-            const candImage = document.getElementById('candImage');
-            const candSymbol = document.getElementById('candSymbol');
-
-            const payload = {
-                name: candName ? candName.value.trim() : "",
-                role: candRole ? candRole.value : "headboy",
-                image_url: candImage ? candImage.value.trim() : "",
-                symbol_url: candSymbol ? candSymbol.value.trim() : "",
-                wing: 'Primary'
-            };
-
-            const { error } = await supabase.from('candidates').insert([payload]);
-            if (error) showToast(error.message, 'bg-red-500');
-            else {
-                e.target.reset();
-                const photoPreview = document.getElementById('photoPreview');
-                const symbolPreview = document.getElementById('symbolPreview');
-                if (photoPreview) photoPreview.classList.add('hidden');
-                if (symbolPreview) symbolPreview.classList.add('hidden');
-                fetchCandidates();
-                showToast('Candidate successfully registered!', 'bg-green-600');
-            }
-            if (btn) {
-                btn.disabled = false;
-                btn.textContent = "Authorize Registration";
-            }
-        });
-        console.log("Candidate form listener attached");
-    } else {
-        console.error("Critical: Candidate form not found!");
+    const form = document.getElementById('candidateForm');
+    if (form && !form.checkValidity()) {
+        form.reportValidity();
+        return;
     }
+
+    const btn = document.getElementById('authBtn');
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Processing...";
+    }
+
+    const candName = document.getElementById('candName');
+    const candRole = document.getElementById('candRole');
+    const candImage = document.getElementById('candImage');
+    const candSymbol = document.getElementById('candSymbol');
+
+    const payload = {
+        name: candName ? candName.value.trim() : "",
+        role: candRole ? candRole.value : "headboy",
+        image_url: candImage ? candImage.value.trim() : "",
+        symbol_url: candSymbol ? candSymbol.value.trim() : "",
+        wing: 'Primary'
+    };
+
+    const { error } = await supabase.from('candidates').insert([payload]);
+    if (error) {
+        showToast(error.message, 'bg-red-500');
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `
+            <span class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-shield-halved"></i>
+            </span>
+            <span>Authorize Registration</span>`;
+        }
+    } else {
+        if (form) form.reset();
+        const photoPreview = document.getElementById('photoPreview');
+        const symbolPreview = document.getElementById('symbolPreview');
+        if (photoPreview) photoPreview.classList.add('hidden');
+        if (symbolPreview) symbolPreview.classList.add('hidden');
+
+        fetchCandidates();
+        showToast('Candidate successfully registered!', 'bg-green-600');
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `
+            <span class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-shield-halved"></i>
+            </span>
+            <span>Authorize Registration</span>`;
+        }
+    }
+};
+
+// Safe form binding (Legacy fallback)
+window.addEventListener('load', () => {
+    // We use onclick="handleAuthClick()" now, so no listener needed.
+    console.log("Dashboard loaded - Auth button ready");
 });
 
 window.deleteCandidate = async (id) => {
@@ -430,18 +443,5 @@ async function deleteCandidate(id) {
     const { data: candidate } = await supabase.from('candidates').select('name').eq('id', id).single();
     const candidateName = candidate?.name || 'this candidate';
 
-    if (!confirm(`⚠️ DELETE CANDIDATE\n\nAre you sure you want to permanently remove "${candidateName}" from the ballot?\n\nThis action cannot be undone.`)) return;
-
-    const { error } = await supabase.from('candidates').delete().eq('id', id);
-    if (error) {
-        showToast('❌ Error: ' + error.message, 'bg-red-500');
-    } else {
-        showToast('✅ Candidate successfully removed from the system.', 'bg-green-600');
-        fetchCandidates();
-    }
-};
-window.deleteCandidate = deleteCandidate; // Keep for now as it's in string-injected HTML
-
-updateChart();
 
 
