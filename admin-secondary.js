@@ -12,7 +12,7 @@ if (loginBtn) {
 
         const validAdmins = [
             { email: "hassaninrada@gmail.com", password: "7890" },
-            { email: "secondary@nasraschool.edu.pk", password: "securepass" }
+            { email: "asma.naseer@nasraschool.edu.pk", password: "7890" }
         ];
 
         const matched = validAdmins.find(
@@ -42,4 +42,5 @@ if (loginBtn) {
         if (e.key === "Enter") loginBtn.click();
     });
 }
+
 
