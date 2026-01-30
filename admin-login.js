@@ -1,6 +1,6 @@
 const adminCredentials = {
     "hassaninrada@gmail.com": "123456",
-    "admin2@gmail.com": "pass2"
+    "asma.naseer@nasraschool.edu.pk": "123456"
 };
 
 const adminForm = document.getElementById("adminForm");
@@ -26,3 +26,4 @@ if (adminForm) {
         }
     });
 }
+
