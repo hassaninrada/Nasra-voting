@@ -1,4 +1,9 @@
-const validTeacherCodes = Array.from({ length: 1000 }, (_, i) => "TCH" + (101 + i));
+const validTeacherCodes = [
+    "TCH101", 
+    "TCH102", 
+    "TCH103",
+    // Add all your codes here...
+];
 
 const toggleBtn = document.getElementById("toggleVisibleBtn");
 if (toggleBtn) {
