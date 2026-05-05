@@ -1,8 +1,11 @@
 const validTeacherCodes = [
-    "TCH101", 
-    "TCH102", 
-    "TCH103",
-    // Add all your codes here...
+"3989","4113","4079","3426","4066","3513",
+"2313","3042","3318","3867","3912","4084",
+"3271","704","3646","3601","954","735",
+"4172","3335","3676","734","3749","3647",
+"745","733","3840","3595","3907","739",
+"3792","4029" 
+//secondary teacher code
 ];
 
 const toggleBtn = document.getElementById("toggleVisibleBtn");
