@@ -4,8 +4,49 @@ const validTeacherCodes = [
 "3271","704","3646","3601","954","735",
 "4172","3335","3676","734","3749","3647",
 "745","733","3840","3595","3907","739",
-"3792","4029" 
+"3792","4029","TCH IqraJavaid","TCH Sir Wiqass",
+"TCH Ms Sadaf","TCH Ms Maryam Aziz","TCH Sir Haris", "TCH Ms Bushra",
 //secondary teacher code
+//Primary teacher code
+   "CT-IA-Rahimeen",
+"CT-IB-Nazish",
+"CT-IC-NidaFatima",
+
+"CT-IIA-Huma",
+"CT-IIB-Hiba",
+"CT-IIC-Naveera",
+"CT-IID-JaveriaYousuf",
+
+"CT-IIIA-Dua",
+"CT-IIIB-Sehar",
+"CT-IIIC-EtherStehen",
+"CT-IIID-Rida",
+
+"CT-IVA-Mahnoor",
+"CT-IVB-Arifa",
+"CT-IVC-MaryamIrfan",
+"CT-IVD-JaweriaAmeer",
+
+"CT-VA-NidaSaeed",
+"CT-VB-Hira",
+"CT-VC-Amrita",
+"CT-VD-Mehwish",
+
+"ST-Anab",
+"ST-SaimaTariq",
+"ST-Shumaila",
+"ST-AsmaMoin",
+"ST-MalekaHuzaifa",
+"ST-Sarah-Computer",
+"ST-MalaikaUsman-Computer",
+"ST-SaimaLatif",
+"ST-Mona",
+"ST-Shamim-Arts",
+"ST-Rabia",
+"ST-Haziq-Sports",
+
+"AHM-1-2",
+"AHM-3-5"
 ];
 
 const toggleBtn = document.getElementById("toggleVisibleBtn");
