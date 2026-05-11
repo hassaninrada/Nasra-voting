@@ -4,8 +4,7 @@ const gr = localStorage.getItem("primary_gr");
 const votes = {
     headboy: localStorage.getItem("vote_headboy") || "ABSTAIN",
     headgirl: localStorage.getItem("vote_headgirl") || "ABSTAIN",
-    deputyboy: localStorage.getItem("vote_deputyboy") || "ABSTAIN",
-    deputygirl: localStorage.getItem("vote_deputygirl") || "ABSTAIN"
+   
 };
 
 const sessIdEl = document.getElementById("sessId");
