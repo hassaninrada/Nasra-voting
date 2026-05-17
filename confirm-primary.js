@@ -3,9 +3,7 @@ import { supabase } from "./supabase-init.js";
 const gr = localStorage.getItem("primary_gr");
 const votes = {
     headboy: localStorage.getItem("vote_headboy") || "ABSTAIN",
-    headgirl: localStorage.getItem("vote_headgirl") || "ABSTAIN",
-    deputyboy: localStorage.getItem("vote_deputyboy") || "ABSTAIN",
-    deputygirl: localStorage.getItem("vote_deputygirl") || "ABSTAIN"
+    headgirl: localStorage.getItem("vote_headgirl") || "ABSTAIN"
 };
 
 const sessIdEl = document.getElementById("sessId");
@@ -17,11 +15,7 @@ if (hbEl) hbEl.textContent = votes.headboy;
 const hgEl = document.getElementById("hg");
 if (hgEl) hgEl.textContent = votes.headgirl;
 
-const dhbEl = document.getElementById("dhb");
-if (dhbEl) dhbEl.textContent = votes.deputyboy;
 
-const dhgEl = document.getElementById("dhg");
-if (dhgEl) dhgEl.textContent = votes.deputygirl;
 
 const finalBtn = document.getElementById("finalBtn");
 if (finalBtn) {
@@ -61,8 +55,6 @@ if (finalBtn) {
 
             localStorage.removeItem("vote_headboy");
             localStorage.removeItem("vote_headgirl");
-            localStorage.removeItem("vote_deputyboy");
-            localStorage.removeItem("vote_deputygirl");
 
             setTimeout(() => { window.location.href = "success-primary.html"; }, 800);
 
@@ -83,8 +75,6 @@ if (restartBtn) {
         if (confirm("Discard all current selections?")) {
             localStorage.removeItem("vote_headboy");
             localStorage.removeItem("vote_headgirl");
-            localStorage.removeItem("vote_deputyboy");
-            localStorage.removeItem("vote_deputygirl");
             window.location.href = "student-primary.html";
         }
     });

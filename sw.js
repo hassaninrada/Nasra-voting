@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nasra-vote-v7';
+const CACHE_NAME = 'nasra-vote-v8';
 const ASSETS = [
   './',
   './index.html',
@@ -44,7 +44,6 @@ const ASSETS = [
   './teacher.html',
   './teacher.js',
   './about.html',
-  './about-student.html',
   './style.css',
   './supabase-init.js',
   './developer-credit.js',
@@ -56,7 +55,30 @@ const ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
+      // Map assets to individual cache addition promises. This prevents a single failure
+      // (like an offline state or missing file) from failing the entire service worker installation.
+      return Promise.all(
+        ASSETS.map((asset) => {
+          return cache.add(asset).catch((err) => {
+            console.warn(`[ServiceWorker] Failed to cache: ${asset}`, err);
+          });
+        })
+      );
+    })
+  );
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('[ServiceWorker] Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
     })
   );
 });

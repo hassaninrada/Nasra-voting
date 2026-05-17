@@ -3,9 +3,7 @@ import { supabase } from "./supabase-init.js";
 // APP STATE
 const roleNames = {
     headboy: "Wing Head Boy",
-    headgirl: "Wing Head Girl",
-    deputyboy: "Deputy Head Boy",
-    deputygirl: "Deputy Head Girl"
+    headgirl: "Wing Head Girl"
 };
 
 const resultChartEl = document.getElementById("resultChart");
@@ -368,7 +366,7 @@ document.getElementById('categorySelect')?.addEventListener('change', updateChar
 document.getElementById("resetAllBtn")?.addEventListener("click", async () => {
     if (confirm("⚠️ CAUTION: Are you sure you want to reset ONLY PRIMARY votes? Secondary wing votes will stay safe.")) {
         try {
-            const primaryRoles = ['headboy', 'headgirl', 'deputyboy', 'deputygirl'];
+            const primaryRoles = ['headboy', 'headgirl'];
             await supabase.from('vote_counts').delete().in('role', primaryRoles);
             await supabase.from('votes_audit').delete().in('role', primaryRoles);
             await supabase.from('students').update({ voted_primary: false }).eq('wing', 'Primary');
@@ -378,7 +376,7 @@ document.getElementById("resetAllBtn")?.addEventListener("click", async () => {
 });
 
 document.getElementById("exportBtn")?.addEventListener("click", async () => {
-    const primaryRoles = ['headboy', 'headgirl', 'deputyboy', 'deputygirl'];
+    const primaryRoles = ['headboy', 'headgirl'];
     const { data } = await supabase.from('vote_counts').select('*').in('role', primaryRoles);
     if (!data) return;
     let csv = "Timestamp,Role,Candidate,Total\n";
