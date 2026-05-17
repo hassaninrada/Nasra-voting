@@ -32,21 +32,18 @@ function toggleSidebar() {
     }
 };
 
-// Global toggle for listeners
 document.querySelectorAll('[data-action="toggle-sidebar"]').forEach(btn => {
     btn.addEventListener('click', toggleSidebar);
 });
 
 // SECTION NAVIGATION
 window.showSection = function (section) {
-    // Hide all sections first
     document.querySelectorAll('section').forEach(s => {
         s.classList.add('hidden');
         s.style.display = 'none';
         s.style.visibility = 'hidden';
     });
 
-    // Show target section
     const targetSection = document.getElementById(`section-${section}`);
     if (targetSection) {
         targetSection.classList.remove('hidden');
@@ -54,20 +51,16 @@ window.showSection = function (section) {
         targetSection.style.visibility = 'visible';
     }
 
-    // Update nav links
     document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('state-active'));
     const activeNav = document.getElementById(`nav-${section}`);
     if (activeNav) activeNav.classList.add('state-active');
 
-    // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
 
     if (section === 'insights') updateChart();
     if (section === 'candidates') fetchCandidates();
 };
 
-// Bind nav links with proper event handling
 document.getElementById('nav-insights')?.addEventListener('click', (e) => {
     e.preventDefault();
     showSection('insights');
@@ -76,7 +69,6 @@ document.getElementById('nav-candidates')?.addEventListener('click', (e) => {
     e.preventDefault();
     showSection('candidates');
 });
-
 
 // CANDIDATE MANAGEMENT
 window.fetchCandidates = async () => {
@@ -151,8 +143,6 @@ document.getElementById('clearSymbolBtn')?.addEventListener('click', () => {
     updateImagePreview('symbol', null);
 });
 
-
-// File to base64 converter
 function fileToBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -162,7 +152,6 @@ function fileToBase64(file) {
     });
 }
 
-// Handle file input changes for preview
 const candImageFile = document.getElementById('candImageFile');
 if (candImageFile) {
     candImageFile.addEventListener('change', async (e) => {
@@ -189,7 +178,6 @@ if (candSymbolFile) {
     });
 }
 
-// Handle URL input changes for preview
 const candImage = document.getElementById('candImage');
 if (candImage) {
     candImage.addEventListener('input', (e) => {
@@ -223,7 +211,7 @@ if (candidateForm) {
             role: document.getElementById('candRole').value,
             image_url: document.getElementById('candImage').value.trim(),
             symbol_url: document.getElementById('candSymbol').value.trim(),
-            wing: 'Primary' // Changed to Primary
+            wing: 'Primary'
         };
 
         const { error } = await supabase.from('candidates').insert([payload]);
@@ -245,7 +233,6 @@ if (candidateForm) {
 }
 
 window.deleteCandidate = async (id) => {
-    // Find candidate name for better confirmation message
     const { data: candidate } = await supabase.from('candidates').select('name').eq('id', id).single();
     const candidateName = candidate?.name || 'this candidate';
 
@@ -260,7 +247,7 @@ window.deleteCandidate = async (id) => {
     }
 };
 
-// INSIGHTS & CHARTING
+// INSIGHTS & CHARTING — only headboy and headgirl
 window.updateChart = function () {
     const categorySelect = document.getElementById("categorySelect");
     if (!categorySelect) return;
@@ -274,8 +261,9 @@ async function loadData(role) {
     const { data, error } = await supabase.from('vote_counts').select('*').eq('role', role);
     if (error) return console.error(error);
 
-    // Fetch total votes
-    const { data: allVotes } = await supabase.from('vote_counts').select('count', { count: 'exact' }).in('role', Object.keys(roleNames));
+    // Only count headboy + headgirl votes for total
+    const primaryRoles = ['headboy', 'headgirl'];
+    const { data: allVotes } = await supabase.from('vote_counts').select('count', { count: 'exact' }).in('role', primaryRoles);
     const total = allVotes ? allVotes.reduce((acc, curr) => acc + curr.count, 0) : 0;
     const totalVotesStat = document.getElementById("totalVotesStat");
     if (totalVotesStat) totalVotesStat.textContent = total;
@@ -334,7 +322,7 @@ function renderChart(role, votes) {
 }
 
 // REALTIME
-supabase.channel('dashboard-primary') // Changed to primary
+supabase.channel('dashboard-primary')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'vote_counts' }, (payload) => {
         const insightsSection = document.getElementById('section-insights');
         if (insightsSection && insightsSection.classList.contains('hidden')) return;
@@ -360,12 +348,12 @@ function logChange(payload) {
     logContainer.prepend(entry);
 }
 
-// Bind selects
 document.getElementById('categorySelect')?.addEventListener('change', updateChart);
 
 document.getElementById("resetAllBtn")?.addEventListener("click", async () => {
     if (confirm("⚠️ CAUTION: Are you sure you want to reset ONLY PRIMARY votes? Secondary wing votes will stay safe.")) {
         try {
+            // Only head boy and head girl — no deputy roles
             const primaryRoles = ['headboy', 'headgirl'];
             await supabase.from('vote_counts').delete().in('role', primaryRoles);
             await supabase.from('votes_audit').delete().in('role', primaryRoles);
@@ -376,6 +364,7 @@ document.getElementById("resetAllBtn")?.addEventListener("click", async () => {
 });
 
 document.getElementById("exportBtn")?.addEventListener("click", async () => {
+    // Only head boy and head girl — no deputy roles
     const primaryRoles = ['headboy', 'headgirl'];
     const { data } = await supabase.from('vote_counts').select('*').in('role', primaryRoles);
     if (!data) return;
