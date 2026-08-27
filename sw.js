@@ -1,4 +1,5 @@
-const CACHE_NAME = 'nasra-vote-v8';
+const CACHE_NAME = 'nasra-vote-v9';
+
 const ASSETS = [
   './',
   './index.html',
@@ -46,47 +47,45 @@ const ASSETS = [
   './about.html',
   './style.css',
   './supabase-init.js',
-  './developer-credit.js',
-  'https://cdn.tailwindcss.com',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
-  'https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap'
+  './developer-credit.js'
 ];
 
-self.addEventListener('install', (event) => {
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      // Map assets to individual cache addition promises. This prevents a single failure
-      // (like an offline state or missing file) from failing the entire service worker installation.
-      return Promise.all(
-        ASSETS.map((asset) => {
-          return cache.add(asset).catch((err) => {
-            console.warn(`[ServiceWorker] Failed to cache: ${asset}`, err);
-          });
-        })
-      );
-    })
+    caches.open(CACHE_NAME).then(cache =>
+      Promise.all(
+        ASSETS.map(asset =>
+          cache.add(asset).catch(err =>
+            console.warn('[ServiceWorker] Cache failed:', asset, err)
+          )
+        )
+      )
+    )
   );
+
+  self.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('[ServiceWorker] Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    caches.keys().then(names =>
+      Promise.all(
+        names
+          .filter(name => name !== CACHE_NAME)
+          .map(name => caches.delete(name))
+      )
+    )
   );
+
+  self.clients.claim();
 });
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
+    caches.match(event.request).then(cachedResponse => {
+      return cachedResponse || fetch(event.request);
     })
   );
 });
+
+
